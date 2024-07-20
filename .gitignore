@@ -1,0 +1,35 @@
+node_modules/
+# Dependency directories
+node_modules/
+
+# Environment variables
+.env
+
+# Build output
+dist/
+build/
+
+# IDE/Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.swp
+
+# Yarn integrity file
+.yarn-integrity
+
+# Coverage directory used by testing frameworks
+coverage/
+
+# TypeScript cache
+*.tsbuildinfo
