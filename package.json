@@ -7,7 +7,7 @@
 		"start": "node src/app.ts",
 		"dev": "nodemon src/app.ts"
 	},
-	"main": "index.js",
+	"main": "src/app.ts",
 	"license": "MIT",
 	"dependencies": {
 		"@types/express": "^4.17.21",
