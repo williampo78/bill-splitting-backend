@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import mongoose from 'mongoose';
 import 'dotenv/config';
 import billRoutes from './routes/bill'
@@ -7,6 +8,17 @@ import groupRoutes from './routes/group'
 const router = express.Router();
 const app = express();
 const port = process.env.PORT;
+
+// Define CORS options
+const corsOptions = {
+    origin: '*', // Allow only this origin
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allow these HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allow these headers
+    credentials: true, // Allow cookies to be sent
+};
+
+// Use the cors middleware with options
+app.use(cors(corsOptions));
 
 //middleware
 
