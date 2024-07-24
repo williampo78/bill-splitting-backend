@@ -32,8 +32,11 @@ router.post("/", async (req, res) => {
 
 router.patch("/:id", async (req, res) => {
     const { id } = req.params
-    const group = await BillGroup.findOneAndUpdate({ _id: '669d05ae1f9b9887e3a6b4fc' }, { ...req.body })
+    const group = await BillGroup.findOneAndUpdate({ _id: id }, { ...req.body })
     res.status(201).json(group);
 });
 
 export default router;
+
+// 66a062db1e7d210ef42d162f
+// 66a064c7e6c93c032e027599
