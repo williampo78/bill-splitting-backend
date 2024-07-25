@@ -10,7 +10,7 @@ const ExpenseSchema: Schema = new Schema({
 
 const BillSchema: Schema = new Schema({
     item: { type: String, required: true },
-    expense: [ExpenseSchema],
+    // expense: [ExpenseSchema],
     groupId: { type: Types.ObjectId, ref: 'group' },
 }, { timestamps: true })
 

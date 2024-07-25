@@ -4,7 +4,7 @@ import BillGroup from "../models/groupModel";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-    console.log(req.query);
+    console.log(req.params);
     const { code } = req.query;
     let group
     if (code) {

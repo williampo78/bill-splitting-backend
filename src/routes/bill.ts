@@ -1,27 +1,42 @@
 import express from "express";
-// import BillGroup from "../models/billModel";
+import Bills from "../models/billModel";
+import BillGroup from "../models/groupModel";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    res.json({ message: "Welcome to the Bill API!" });
+router.get("/", async (req, res) => {
+    const { code } = req.query;
+    let bills: any;
+    try {
+        const group = await BillGroup.findOne({ code: code?.toString() });
+        const groupId = group?._id;
+        if (groupId) {
+            let groupIdString = groupId.toString()
+            bills = await Bills.find({ groupId: groupIdString });
+        } else {
+            bills = await Bills.find();
+        }
+        res.json({ groupName: group?.name, bills: bills });
+    } catch (error: any) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
 });
 
 router.get("/:id", (req, res) => {
     res.json({ message: "Get single bill" });
 });
 
-// router.post("/", async (req, res) => {
-//     const { name } = req.body;
-//     const code = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
-//     try {
-//         const group = await BillGroup.create({ code, name });
-//         res.status(200).json(group)
+router.post("/", async (req, res) => {
+    const { item, groupId } = req.body;
+    try {
+        const bill = await Bills.create({ item, groupId });
+        res.status(200).json(bill)
 
-//     } catch (error: any) {
-//         res.status(400).json({ error: error.message });
-//     }
-// });
+    } catch (error: any) {
+        res.status(400).json({ error: error.message });
+    }
+});
 
 router.patch("/:id", (req, res) => {
     res.json({ message: "Update a bill" });
