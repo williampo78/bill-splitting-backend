@@ -36,6 +36,34 @@ router.patch("/:id", async (req, res) => {
     res.status(201).json(group);
 });
 
+router.get("/:id/users", async (req, res) => {
+    const { id } = req.params
+    try {
+        const group = await BillGroup.findOne({ _id: id });
+        if (group) {
+
+            res.status(200).json(group.users);
+        } else {
+            res.status(400).json({ message: 'Wrong group id' });
+
+        }
+    } catch (error: any) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+router.patch("/:id/users", async (req, res) => {
+    const { id } = req.params
+    try {
+        const group = await BillGroup.findOneAndUpdate({ _id: id }, { ...req.body });
+        res.status(200).json(group);
+
+    } catch (error: any) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+
 export default router;
 
 // 66a062db1e7d210ef42d162f
