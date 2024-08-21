@@ -39,7 +39,7 @@ router.patch("/:id", async (req, res) => {
 router.get("/:id/users", async (req, res) => {
     const { id } = req.params
     try {
-        const group = await BillGroup.findOne({ _id: id });
+        const group = await BillGroup.findById(id)
         if (group) {
 
             res.status(200).json(group.users);

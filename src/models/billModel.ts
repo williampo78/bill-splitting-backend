@@ -1,4 +1,5 @@
 import { Document, Schema, model, Types } from 'mongoose';
+import { UserSchema } from './UserModel';
 
 export interface Bill extends Document {
     _id?: Types.ObjectId;

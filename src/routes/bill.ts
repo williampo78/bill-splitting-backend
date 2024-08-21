@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
 
         const group = await BillGroup.findOne({ code: code?.toString() });
         const groupId = group?._id;
-        const userPaying = await BillGroup.findOne({ group: groupId });
+        const userPaying = await BillGroup.findOne({ group: groupId })
         if (groupId) {
             let groupIdString = groupId.toString()
             bills = await Bills.find({ groupId: groupIdString })

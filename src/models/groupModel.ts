@@ -1,4 +1,5 @@
 import { Document, Schema, model, Types } from 'mongoose';
+import { UserSchema } from './UserModel';
 
 interface User extends Document {
     // _id: Types.ObjectId;
@@ -13,9 +14,9 @@ interface Group extends Document {
 }
 
 // Create the User schema
-const UserSchema: Schema = new Schema({
-    name: { type: String, required: true }
-});
+// const UserSchema: Schema = new Schema({
+//     name: { type: String, required: true }
+// });
 
 // Create the Group schema
 const GroupSchema: Schema = new Schema({
