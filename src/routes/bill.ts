@@ -15,12 +15,25 @@ router.get("/", async (req, res) => {
         const userPaying = await BillGroup.findOne({ group: groupId });
         if (groupId) {
             let groupIdString = groupId.toString()
-            bills = await Bills.find({ groupId: groupIdString })
+            bills = await Bills.find({ groupId: groupIdString }).populate('paidBy').populate('sharedBy.userId', '_id name').lean()
+
+
+
 
         } else {
             bills = await Bills.find();
         }
-        res.json({ groupName: group?.name, bills: bills });
+
+        const transformedBills = bills.map((bill: any) => ({
+            ...bill, // Spread the bill object
+            sharedBy: bill.sharedBy.map((share: any) => ({
+                user: share.userId,  // Rename 'userId' to 'user'
+                amount: share.amount
+            }))
+        }));
+
+
+        res.json({ groupName: group?.name, bills: transformedBills });
     } catch (error: any) {
         console.log(error);
         res.status(400).json({ error: error.message });

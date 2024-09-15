@@ -6,7 +6,7 @@ export interface Bill extends Document {
     groupId: Types.ObjectId
     price: number
     paidBy: Types.ObjectId
-    sharedBy: { userId: Types.ObjectId, ammout: number }[]
+    sharedBy: { userId: Types.ObjectId, amount: number }[]
     payingTime: Date | string
 }
 
@@ -14,7 +14,7 @@ export interface Bill extends Document {
 // Create the User schema
 const SharingSchema: Schema = new Schema({
     userId: { type: Types.ObjectId, required: true, ref: 'user' },
-    ammount: { type: Number, required: true }
+    amount: { type: Number, required: true }
 });
 
 const BillSchema: Schema = new Schema({
