@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import 'dotenv/config';
 import billRoutes from './routes/bill'
 import groupRoutes from './routes/group'
+import userRoutes from './routes/user'
 
 const router = express.Router();
 const app = express();
@@ -30,6 +31,7 @@ app.use(express.json());
 
 app.use('/api/bills', billRoutes);
 app.use('/api/group', groupRoutes);
+app.use('/api/users', userRoutes);
 
 mongoose
     .connect(process.env.MONGODB_URI!)
