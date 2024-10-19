@@ -8,9 +8,9 @@ router.get("/", async (req, res) => {
     const { code } = req.query;
     let group
     if (code) {
-        group = await BillGroup.findOne({ code }).populate('users','id name');
+        group = await BillGroup.findOne({ code })
     } else {
-        group = await BillGroup.find().populate('users','id name');
+        group = await BillGroup.find()
 
     }
     res.status(200).json(group);
@@ -31,7 +31,15 @@ router.post("/", async (req, res) => {
 
 router.patch("/:id", async (req, res) => {
     const { id } = req.params
-    const group = await BillGroup.findOneAndUpdate({ _id: id }, { ...req.body })
+    const { name } = req.body;
+    const group = await BillGroup.findOneAndUpdate({ _id: id }, { name: name }, { new: true })
+    res.status(201).json(group);
+});
+
+router.patch("/:id/users", async (req, res) => {
+    const { id } = req.params
+    const { users } = req.body;
+    const group = await BillGroup.findOneAndUpdate({ _id: id }, { users: users }, { new: true })
     res.status(201).json(group);
 });
 

@@ -13,7 +13,7 @@ export interface Bill extends Document {
 
 // Create the User schema
 const SharingSchema: Schema = new Schema({
-    userId: { type: Types.ObjectId, required: true, ref: 'user' },
+    user: { type: Types.ObjectId, required: true },
     amount: { type: Number, required: true }
 });
 
@@ -22,7 +22,7 @@ const BillSchema: Schema = new Schema({
     item: { type: String, required: true },
     groupId: { type: Types.ObjectId, ref: 'group' },
     price: { type: Number, required: true },
-    paidBy: { type: Types.ObjectId, required: true, ref: 'user' },
+    paidBy: { type: Types.ObjectId, required: true },
     sharedBy: [SharingSchema],
     payingTime: { type: Date, required: true }
 }, { timestamps: true })
