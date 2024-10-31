@@ -42,8 +42,15 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.get("/:id", (req, res) => {
-    res.json({ message: "Get single bill" });
+router.get("/:id", async (req, res) => {
+    const { id } = req.params
+    try {
+        const bill = await Bills.findById(id)
+        res.status(200).json(bill)
+
+    } catch (error: any) {
+        res.status(400).json({ error: error.message });
+    }
 });
 
 router.post("/", async (req, res) => {
