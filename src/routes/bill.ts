@@ -64,8 +64,16 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.patch("/:id", (req, res) => {
-    res.json({ message: "Update a bill" });
+router.patch("/:id", async (req, res) => {
+    const { id } = req.params
+    const { item, price, paidBy, sharedBy, payingTime } = req.body;
+    try {
+        const bill = await Bills.findOneAndUpdate({ _id: id }, { item, price, paidBy, sharedBy, payingTime }, { new: true })
+        res.status(200).json(bill)
+
+    } catch (error: any) {
+        res.status(400).json({ error: error.message });
+    }
 });
 
 export default router;
