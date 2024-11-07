@@ -11,9 +11,12 @@ router.get("/", async (req, res) => {
         group = await BillGroup.findOne({ code })
     } else {
         group = await BillGroup.find()
-
     }
-    res.status(200).json(group);
+    if (group) {
+        res.status(200).json(group);
+    } else {
+        res.status(400).json({ error: '無此群組' });
+    }
 });
 
 
@@ -34,6 +37,20 @@ router.patch("/:id", async (req, res) => {
     const { name } = req.body;
     const group = await BillGroup.findOneAndUpdate({ _id: id }, { name: name }, { new: true })
     res.status(201).json(group);
+});
+
+router.get("/:id/users", async (req, res) => {
+    const { id } = req.params
+    try {
+        const group = await BillGroup.findById(id)
+        if (group) {
+            res.status(201).json(group.users);
+        } else {
+            res.status(400).json({ error: '無此群組' });
+        }
+    } catch (error: any) {
+        res.status(400).json({ error: error.message });
+    }
 });
 
 router.patch("/:id/users", async (req, res) => {
