@@ -4,17 +4,19 @@ import BillGroup from "../models/groupModel";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-    console.log(req.query);
+    console.log(req.params);
     const { code } = req.query;
     let group
     if (code) {
-
-        group = await BillGroup.findOne({ code });
+        group = await BillGroup.findOne({ code })
     } else {
-        group = await BillGroup.find();
-
+        group = await BillGroup.find()
     }
-    res.status(200).json(group);
+    if (group) {
+        res.status(200).json(group);
+    } else {
+        res.status(400).json({ error: '無此群組' });
+    }
 });
 
 
@@ -32,11 +34,31 @@ router.post("/", async (req, res) => {
 
 router.patch("/:id", async (req, res) => {
     const { id } = req.params
-    const group = await BillGroup.findOneAndUpdate({ _id: id }, { ...req.body })
+    const { name } = req.body;
+    const group = await BillGroup.findOneAndUpdate({ _id: id }, { name: name }, { new: true })
     res.status(201).json(group);
 });
 
-export default router;
+router.get("/:id/users", async (req, res) => {
+    const { id } = req.params
+    try {
+        const group = await BillGroup.findById(id)
+        if (group) {
+            res.status(201).json(group.users);
+        } else {
+            res.status(400).json({ error: '無此群組' });
+        }
+    } catch (error: any) {
+        res.status(400).json({ error: error.message });
+    }
+});
 
-// 66a062db1e7d210ef42d162f
-// 66a064c7e6c93c032e027599
+router.patch("/:id/users", async (req, res) => {
+    const { id } = req.params
+    const { users } = req.body;
+    const group = await BillGroup.findOneAndUpdate({ _id: id }, { users: users }, { new: true })
+    res.status(201).json(group);
+});
+
+
+export default router;
