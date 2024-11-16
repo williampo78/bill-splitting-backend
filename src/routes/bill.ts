@@ -14,8 +14,6 @@ router.get("/", async (req, res) => {
         if (!group) {
             throw new Error('Wrong group code')
         }
-        // const userPaying = await BillGroup.findOne({ group: groupId });
-        // const user = group.users.find(user => user._id.equals(bill.paidBy));
         bills = await Bills.find({ groupId: groupId })
         bills = await Promise.all(bills.map(async (bill: Bill) => {
             // Step 4: Find the user in the group by the paidBy _id
@@ -24,13 +22,29 @@ router.get("/", async (req, res) => {
                 throw new Error(`User not found in group for userId ${bill.paidBy}`);
             }
 
+
+            // Add the user name to the sharedBy array
+            const sharedByWithNames = bill.sharedBy.map(({ userId, amount }) => {
+                const user = group.users.find(u => u._id.equals(userId));
+                if (!user) {
+                    throw new Error(`User not found in group for sharedBy userId ${userId}`);
+                }
+
+                // Construct a plain object with name added
+                return {
+                    userId,
+                    amount,
+                    name: user.name // Add the user's name
+                };
+            });
             // Step 5: Return the bill with the nested paidBy object { id, userName }
             return {
                 ...bill.toObject(),
                 paidBy: {
                     id: user._id,
                     name: user.name
-                }
+                },
+                sharedBy: sharedByWithNames
             };
         }));
         res.json({
@@ -41,6 +55,7 @@ router.get("/", async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
+
 
 router.get("/:id", async (req, res) => {
     const { id } = req.params
